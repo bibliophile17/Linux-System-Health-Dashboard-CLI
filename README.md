@@ -20,12 +20,14 @@ Monitor CPU, memory, disk, network, and processes — all from the command line.
 ## Installation
 
 **1. Clone the repo**
+
 ```bash
 git clone https://github.com/yourusername/syshealth.git
 cd syshealth
 ```
 
 **2. Install dependencies**
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -37,21 +39,25 @@ That's it. No root access needed.
 ## Usage
 
 ### Full dashboard snapshot
+
 ```bash
 python syshealth.py show
 ```
 
 ### Live auto-refresh (every 5 seconds)
+
 ```bash
 python syshealth.py watch
 ```
 
 ### Live refresh with custom interval (e.g. every 2 seconds)
+
 ```bash
 python syshealth.py watch --interval 2
 ```
 
 ### Individual sections
+
 ```bash
 python syshealth.py cpu
 python syshealth.py memory
@@ -61,11 +67,13 @@ python syshealth.py processes
 ```
 
 ### Show top 15 processes
+
 ```bash
 python syshealth.py processes --count 15
 ```
 
 ### Help
+
 ```bash
 python syshealth.py --help
 python syshealth.py watch --help
@@ -94,11 +102,11 @@ syshealth/
 
 ## Tech Stack
 
-| Library | Purpose |
-|---------|---------|
+| Library  | Purpose                                                     |
+| -------- | ----------------------------------------------------------- |
 | `psutil` | Read system metrics (CPU, memory, disk, network, processes) |
-| `rich` | Beautiful terminal UI (tables, panels, color bars) |
-| `click` | CLI commands and options |
+| `rich`   | Beautiful terminal UI (tables, panels, color bars)          |
+| `click`  | CLI commands and options                                    |
 
 ---
 
@@ -107,7 +115,3 @@ syshealth/
 A practical learning project to explore Linux system internals, CLI design, and Python tooling — inspired by tools like `htop` and `glances`.
 
 ---
-
-## License
-
-MIT

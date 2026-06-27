@@ -89,7 +89,7 @@ def render_dashboard():
     now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     uname = platform.uname()
 
-    # ── Header ──────────────────────────────────────────────
+    # Header 
     header = Text()
     header.append("⚡ syshealth", style="bold cyan")
     header.append(f"  •  {uname.node}", style="dim")
@@ -97,7 +97,7 @@ def render_dashboard():
     header.append(f"  •  {now}", style="dim")
     console.print(Panel(header, box=box.HORIZONTALS, padding=(0, 1)))
 
-    # ── CPU ─────────────────────────────────────────────────
+    # CPU 
     cpu_pct, cpu_count, freq = get_cpu_info()
     cpu_per_core = psutil.cpu_percent(percpu=True)
 
@@ -113,7 +113,7 @@ def render_dashboard():
 
     console.print(Panel(cpu_table, title="[bold cyan]CPU[/bold cyan]", box=box.ROUNDED))
 
-    # ── Memory ──────────────────────────────────────────────
+    # Memory 
     mem, swap = get_memory_info()
 
     mem_table = Table(box=None, padding=(0, 1), show_header=False)
@@ -137,7 +137,7 @@ def render_dashboard():
 
     console.print(Panel(mem_table, title="[bold cyan]Memory[/bold cyan]", box=box.ROUNDED))
 
-    # ── Disk ────────────────────────────────────────────────
+    # Disk 
     disk_table = Table(box=box.SIMPLE, padding=(0, 1))
     disk_table.add_column("Mount", style="cyan", width=15)
     disk_table.add_column("Usage", width=30)
@@ -156,7 +156,7 @@ def render_dashboard():
 
     console.print(Panel(disk_table, title="[bold cyan]Disk[/bold cyan]", box=box.ROUNDED))
 
-    # ── Network ─────────────────────────────────────────────
+    # Network
     net = get_network_info()
     net_table = Table(box=None, padding=(0, 1), show_header=False)
     net_table.add_column(width=18)
@@ -168,7 +168,7 @@ def render_dashboard():
 
     console.print(Panel(net_table, title="[bold cyan]Network[/bold cyan]", box=box.ROUNDED))
 
-    # ── Top Processes ───────────────────────────────────────
+    # Top Processes 
     proc_table = Table(box=box.SIMPLE, padding=(0, 1))
     proc_table.add_column("PID", style="dim", width=8)
     proc_table.add_column("Name", style="cyan", width=20)
@@ -188,7 +188,7 @@ def render_dashboard():
     console.print(Panel(proc_table, title="[bold cyan]Top Processes (by CPU)[/bold cyan]", box=box.ROUNDED))
 
 
-# ── CLI Commands ────────────────────────────────────────────
+# CLI Commands 
 
 @click.group()
 def cli():
