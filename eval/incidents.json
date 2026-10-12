@@ -1,0 +1,1217 @@
+{
+ "schema_version": 1,
+ "description": "SYNTHETIC labelled incidents for evaluating syshealth analysis. No real host data. 'null' evidence means the metric was unreadable. Deviations are merged over 'baseline'.",
+ "baseline": {
+  "cpu_percent": 12.0,
+  "cpu_count": 4,
+  "loadavg": [
+   0.4,
+   0.5,
+   0.5
+  ],
+  "uptime_seconds": 864000,
+  "memory": {
+   "total_gib": 16,
+   "used_percent": 38.0,
+   "swap_total_gib": 4,
+   "swap_used_percent": 0.0
+  },
+  "disks": [
+   {
+    "mount": "/",
+    "fstype": "ext4",
+    "percent": 41.0
+   },
+   {
+    "mount": "/data",
+    "fstype": "xfs",
+    "percent": 55.0
+   }
+  ],
+  "process_count": 310,
+  "top_cpu": [
+   {
+    "pid": 2101,
+    "name": "feedhandler",
+    "cpu_percent": 35.0,
+    "mem_percent": 2.0
+   }
+  ],
+  "top_mem": [
+   {
+    "pid": 2210,
+    "name": "postgres",
+    "cpu_percent": 3.0,
+    "mem_percent": 9.0
+   }
+  ],
+  "diskio": [
+   {
+    "device": "nvme0n1",
+    "util_percent": 8.0,
+    "await_ms": 0.4
+   }
+  ],
+  "sockets": {
+   "listeners": [
+    [
+     "0.0.0.0",
+     22
+    ],
+    [
+     "127.0.0.1",
+     5432
+    ]
+   ],
+   "states": {
+    "LISTEN": 2,
+    "ESTABLISHED": 40,
+    "TIME_WAIT": 120
+   }
+  },
+  "pressure": {
+   "cpu": [
+    0.0,
+    null
+   ],
+   "memory": [
+    0.0,
+    0.0
+   ],
+   "io": [
+    0.2,
+    0.0
+   ]
+  },
+  "oom_kills": 0,
+  "failed_units": [],
+  "commands_run": true,
+  "net": [
+   {
+    "name": "eth0",
+    "errors_total": 0,
+    "drops_total": 0
+   }
+  ],
+  "net_deltas": {
+   "eth0": {
+    "errors": 0,
+    "drops": 0
+   }
+  }
+ },
+ "cases": [
+  {
+   "id": "healthy-01",
+   "split": "dev",
+   "category": "healthy",
+   "title": "Idle trading host",
+   "injected_condition": "None: normal operation.",
+   "evidence": {},
+   "uncertainty": "One short sampling window cannot show intermittent problems.",
+   "expected": {
+    "status": "healthy",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "healthy-02",
+   "split": "dev",
+   "category": "healthy",
+   "title": "Busy but within limits",
+   "injected_condition": "None: elevated but normal daytime load.",
+   "evidence": {
+    "cpu_percent": 55.0,
+    "loadavg": [
+     2.0,
+     1.8,
+     1.5
+    ],
+    "memory": {
+     "used_percent": 70.0,
+     "swap_used_percent": 5.0
+    },
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 78.0
+     }
+    ]
+   },
+   "uncertainty": "Headroom against future growth is not assessed.",
+   "expected": {
+    "status": "healthy",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "cpu-01",
+   "split": "dev",
+   "category": "cpu",
+   "title": "One runaway process saturates all cores",
+   "injected_condition": "A strategy process enters a busy loop and consumes ~3.4 cores of 4.",
+   "evidence": {
+    "cpu_percent": 96.0,
+    "loadavg": [
+     5.2,
+     4.8,
+     3.9
+    ],
+    "pressure": {
+     "cpu": [
+      35.0,
+      null
+     ]
+    },
+    "top_cpu": [
+     {
+      "pid": 2101,
+      "name": "strategy_engine",
+      "cpu_percent": 340.0,
+      "mem_percent": 2.1
+     },
+     {
+      "pid": 2102,
+      "name": "feedhandler",
+      "cpu_percent": 20.0,
+      "mem_percent": 2.0
+     }
+    ]
+   },
+   "uncertainty": "Why the process spun (release, input, bug) is not observable; figures are one-window averages.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "cpu_saturation"
+    ],
+    "valid_causes": [
+     "cpu_saturation"
+    ],
+    "required_in_top3": [
+     "cpu_saturation"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "window"
+    ]
+   }
+  },
+  {
+   "id": "cpu-02",
+   "split": "dev",
+   "category": "cpu",
+   "title": "CPU saturation spread across many processes",
+   "injected_condition": "A traffic surge raises CPU on many workers; no single dominant process.",
+   "evidence": {
+    "cpu_percent": 91.0,
+    "loadavg": [
+     4.6,
+     4.0,
+     3.5
+    ],
+    "pressure": {
+     "cpu": [
+      18.0,
+      null
+     ]
+    },
+    "top_cpu": [
+     {
+      "pid": 3001,
+      "name": "worker",
+      "cpu_percent": 60.0,
+      "mem_percent": 1.0
+     },
+     {
+      "pid": 3002,
+      "name": "worker",
+      "cpu_percent": 55.0,
+      "mem_percent": 1.0
+     },
+     {
+      "pid": 3003,
+      "name": "worker",
+      "cpu_percent": 50.0,
+      "mem_percent": 1.0
+     }
+    ]
+   },
+   "uncertainty": "Whether the surge is expected demand or a regression cannot be told from host metrics.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "cpu_saturation"
+    ],
+    "valid_causes": [
+     "cpu_saturation"
+    ],
+    "required_in_top3": [
+     "cpu_saturation"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "mem-01",
+   "split": "dev",
+   "category": "memory",
+   "title": "Leaking JVM exhausts RAM",
+   "injected_condition": "A pricing JVM grows until RAM is nearly gone and the host swaps heavily.",
+   "evidence": {
+    "memory": {
+     "used_percent": 96.0,
+     "swap_used_percent": 70.0
+    },
+    "pressure": {
+     "memory": [
+      40.0,
+      22.0
+     ]
+    },
+    "top_mem": [
+     {
+      "pid": 2210,
+      "name": "java_pricing",
+      "cpu_percent": 3.0,
+      "mem_percent": 61.0
+     }
+    ]
+   },
+   "uncertainty": "A leak versus a legitimately large working set cannot be distinguished from one snapshot.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "memory_pressure"
+    ],
+    "valid_causes": [
+     "memory_pressure"
+    ],
+    "required_in_top3": [
+     "memory_pressure"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "mem-02",
+   "split": "dev",
+   "category": "memory",
+   "title": "OOM kill takes down a service (cause and consequence)",
+   "injected_condition": "Memory exhaustion triggers the kernel OOM killer, which kills the order gateway.",
+   "evidence": {
+    "memory": {
+     "used_percent": 97.0,
+     "swap_used_percent": 95.0
+    },
+    "pressure": {
+     "memory": [
+      45.0,
+      30.0
+     ]
+    },
+    "oom_kills": 4,
+    "failed_units": [
+     "order-gateway.service"
+    ],
+    "top_mem": [
+     {
+      "pid": 2210,
+      "name": "java_pricing",
+      "cpu_percent": 3.0,
+      "mem_percent": 55.0
+     }
+    ]
+   },
+   "uncertainty": "Which process the OOM killer chose, and when, is not recorded by the counters used.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "memory_pressure"
+    ],
+    "valid_causes": [
+     "memory_pressure",
+     "service_failure"
+    ],
+    "required_in_top3": [
+     "memory_pressure",
+     "service_failure"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "oom"
+    ]
+   }
+  },
+  {
+   "id": "disk-01",
+   "split": "dev",
+   "category": "disk_space",
+   "title": "Root filesystem nearly full",
+   "injected_condition": "Logs fill / to 97%.",
+   "evidence": {
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 97.0
+     },
+     {
+      "mount": "/data",
+      "fstype": "xfs",
+      "percent": 55.0
+     }
+    ]
+   },
+   "uncertainty": "Which directory is growing, and how fast, has not been measured.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "disk_space_exhaustion"
+    ],
+    "valid_causes": [
+     "disk_space_exhaustion"
+    ],
+    "required_in_top3": [
+     "disk_space_exhaustion"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "disk-02",
+   "split": "dev",
+   "category": "disk_space",
+   "title": "Two filesystems high",
+   "injected_condition": "/var at 92% and /data at 86% after a retention job stopped running.",
+   "evidence": {
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 50.0
+     },
+     {
+      "mount": "/var",
+      "fstype": "ext4",
+      "percent": 92.0
+     },
+     {
+      "mount": "/data",
+      "fstype": "xfs",
+      "percent": 86.0
+     }
+    ]
+   },
+   "uncertainty": "Inode exhaustion and deleted-but-open files are not checked.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "disk_space_exhaustion"
+    ],
+    "valid_causes": [
+     "disk_space_exhaustion"
+    ],
+    "required_in_top3": [
+     "disk_space_exhaustion"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "io-01",
+   "split": "dev",
+   "category": "disk_io",
+   "title": "Storage saturated; load high while CPU idle",
+   "injected_condition": "A backup job saturates the NVMe device; tasks wait in uninterruptible I/O.",
+   "evidence": {
+    "cpu_percent": 9.0,
+    "loadavg": [
+     6.1,
+     5.5,
+     4.0
+    ],
+    "diskio": [
+     {
+      "device": "nvme0n1",
+      "util_percent": 99.0,
+      "await_ms": 85.0
+     }
+    ],
+    "pressure": {
+     "io": [
+      55.0,
+      40.0
+     ]
+    }
+   },
+   "uncertainty": "Which process issues the I/O is not identified.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "disk_io_saturation"
+    ],
+    "valid_causes": [
+     "disk_io_saturation"
+    ],
+    "required_in_top3": [
+     "disk_io_saturation"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "net-01",
+   "split": "dev",
+   "category": "network",
+   "title": "Interface errors rising now",
+   "injected_condition": "A failing cable/NIC produces receive errors and drops during the window.",
+   "evidence": {
+    "net": [
+     {
+      "name": "eth0",
+      "errors_total": 340,
+      "drops_total": 1200
+     }
+    ],
+    "net_deltas": {
+     "eth0": {
+      "errors": 340,
+      "drops": 1200
+     }
+    }
+   },
+   "uncertainty": "Cable, driver or switch-port origin cannot be told from counters alone.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "network_interface_errors"
+    ],
+    "valid_causes": [
+     "network_interface_errors"
+    ],
+    "required_in_top3": [
+     "network_interface_errors"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "net-02",
+   "split": "dev",
+   "category": "network",
+   "title": "Historic interface counters, nothing now",
+   "injected_condition": "Errors occurred weeks ago; the counters are non-zero but static.",
+   "evidence": {
+    "net": [
+     {
+      "name": "eth0",
+      "errors_total": 5000,
+      "drops_total": 20000
+     }
+    ],
+    "net_deltas": {
+     "eth0": {
+      "errors": 0,
+      "drops": 0
+     }
+    }
+   },
+   "uncertainty": "Past errors may recur; one window shows only the present.",
+   "expected": {
+    "status": "healthy",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "svc-01",
+   "split": "dev",
+   "category": "process_crash",
+   "title": "Two systemd units failed",
+   "injected_condition": "Two market-data services crashed and were not restarted.",
+   "evidence": {
+    "failed_units": [
+     "md-gateway.service",
+     "risk-check.service"
+    ]
+   },
+   "uncertainty": "Exit code, signal and the reason for the crash are not captured.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "service_failure"
+    ],
+    "valid_causes": [
+     "service_failure"
+    ],
+    "required_in_top3": [
+     "service_failure"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": [
+     "exit"
+    ]
+   }
+  },
+  {
+   "id": "svc-02",
+   "split": "dev",
+   "category": "process_crash",
+   "title": "Historic OOM counter only",
+   "injected_condition": "The OOM killer ran weeks ago; memory is fine now and no unit is failed.",
+   "evidence": {
+    "oom_kills": 3
+   },
+   "uncertainty": "The counter carries no timestamps.",
+   "expected": {
+    "status": "healthy",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "sock-01",
+   "split": "dev",
+   "category": "sockets",
+   "title": "CLOSE_WAIT build-up",
+   "injected_condition": "An application stops closing sockets after peers disconnect.",
+   "evidence": {
+    "sockets": {
+     "listeners": [
+      [
+       "0.0.0.0",
+       22
+      ]
+     ],
+     "states": {
+      "LISTEN": 2,
+      "ESTABLISHED": 300,
+      "CLOSE_WAIT": 900,
+      "TIME_WAIT": 200
+     }
+    }
+   },
+   "uncertainty": "Sockets are not attributed to a process.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "connection_state_buildup"
+    ],
+    "valid_causes": [
+     "connection_state_buildup"
+    ],
+    "required_in_top3": [
+     "connection_state_buildup"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "proc-01",
+   "split": "dev",
+   "category": "process_count",
+   "title": "Runaway process creation",
+   "injected_condition": "A supervisor forks without reaping.",
+   "evidence": {
+    "process_count": 12000
+   },
+   "uncertainty": "Zombies versus real workers cannot be told apart here.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "process_proliferation"
+    ],
+    "valid_causes": [
+     "process_proliferation"
+    ],
+    "required_in_top3": [
+     "process_proliferation"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "unav-01",
+   "split": "dev",
+   "category": "unavailable",
+   "title": "Nothing could be read",
+   "injected_condition": "The monitoring process lost access to /proc and the network tables.",
+   "evidence": {
+    "cpu_percent": null,
+    "cpu_count": null,
+    "loadavg": null,
+    "uptime_seconds": null,
+    "memory": null,
+    "disks": null,
+    "process_count": null,
+    "diskio": null,
+    "sockets": null,
+    "pressure": null,
+    "oom_kills": null,
+    "failed_units": null,
+    "net": null,
+    "net_deltas": null,
+    "top_cpu": [],
+    "top_mem": []
+   },
+   "uncertainty": "Nothing could be assessed.",
+   "expected": {
+    "status": "insufficient_data",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "assess"
+    ]
+   }
+  },
+  {
+   "id": "h-cpu-burst",
+   "split": "heldout",
+   "category": "conflicting",
+   "title": "CPU high but load and stall pressure low",
+   "injected_condition": "A 5-second batch burst: CPU is busy in this window but was not sustained.",
+   "evidence": {
+    "cpu_percent": 93.0,
+    "loadavg": [
+     0.3,
+     0.4,
+     0.6
+    ],
+    "pressure": {
+     "cpu": [
+      0.0,
+      null
+     ]
+    },
+    "top_cpu": [
+     {
+      "pid": 4001,
+      "name": "batch_job",
+      "cpu_percent": 120.0,
+      "mem_percent": 1.0
+     }
+    ]
+   },
+   "uncertainty": "Whether the burst is sustained saturation cannot be told from one window.",
+   "expected": {
+    "status": "inconclusive",
+    "acceptable_primary": [],
+    "valid_causes": [
+     "cpu_saturation"
+    ],
+    "required_in_top3": [],
+    "max_confidence": "weak",
+    "uncertainty_keywords": [
+     "window"
+    ]
+   }
+  },
+  {
+   "id": "h-mem-highuse",
+   "split": "heldout",
+   "category": "insufficient",
+   "title": "High memory use without any stall signal",
+   "injected_condition": "Page cache and a large working set raise used memory; nothing is actually starved.",
+   "evidence": {
+    "memory": {
+     "used_percent": 91.0,
+     "swap_total_gib": 0,
+     "swap_used_percent": 0.0
+    },
+    "pressure": {
+     "memory": [
+      0.0,
+      0.0
+     ]
+    }
+   },
+   "uncertainty": "High usage alone does not show contention.",
+   "expected": {
+    "status": "inconclusive",
+    "acceptable_primary": [],
+    "valid_causes": [
+     "memory_pressure"
+    ],
+    "required_in_top3": [],
+    "max_confidence": "weak",
+    "uncertainty_keywords": [
+     "pressure"
+    ]
+   }
+  },
+  {
+   "id": "h-load-unexplained",
+   "split": "heldout",
+   "category": "conflicting",
+   "title": "Load high but no resource explains it",
+   "injected_condition": "Tasks blocked on a lock or throttled by a cgroup: load is high while CPU, I/O and memory are quiet.",
+   "evidence": {
+    "cpu_percent": 11.0,
+    "loadavg": [
+     7.0,
+     6.5,
+     5.0
+    ],
+    "pressure": {
+     "cpu": [
+      0.0,
+      null
+     ],
+     "memory": [
+      0.0,
+      0.0
+     ],
+     "io": [
+      0.1,
+      0.0
+     ]
+    },
+    "diskio": [
+     {
+      "device": "nvme0n1",
+      "util_percent": 5.0,
+      "await_ms": 0.5
+     }
+    ]
+   },
+   "uncertainty": "Lock contention, cgroup throttling and blocked tasks are not observable by these checks.",
+   "expected": {
+    "status": "inconclusive",
+    "acceptable_primary": [],
+    "valid_causes": [
+     "unexplained_load"
+    ],
+    "required_in_top3": [],
+    "max_confidence": "weak",
+    "uncertainty_keywords": [
+     "load"
+    ]
+   }
+  },
+  {
+   "id": "h-multi-cpu-disk",
+   "split": "heldout",
+   "category": "multi_fault",
+   "title": "CPU saturation and a full data disk at once",
+   "injected_condition": "A runaway process and an unrelated log flood happen together.",
+   "evidence": {
+    "cpu_percent": 94.0,
+    "loadavg": [
+     5.0,
+     4.5,
+     3.0
+    ],
+    "pressure": {
+     "cpu": [
+      30.0,
+      null
+     ]
+    },
+    "top_cpu": [
+     {
+      "pid": 2101,
+      "name": "strategy_engine",
+      "cpu_percent": 330.0,
+      "mem_percent": 2.0
+     }
+    ],
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 41.0
+     },
+     {
+      "mount": "/data",
+      "fstype": "xfs",
+      "percent": 95.0
+     }
+    ]
+   },
+   "uncertainty": "Whether the two issues are related is unknown.",
+   "expected": {
+    "status": "multiple_issues",
+    "acceptable_primary": [
+     "cpu_saturation",
+     "disk_space_exhaustion"
+    ],
+    "valid_causes": [
+     "cpu_saturation",
+     "disk_space_exhaustion"
+    ],
+    "required_in_top3": [
+     "cpu_saturation",
+     "disk_space_exhaustion"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "h-cpu-io-both",
+   "split": "heldout",
+   "category": "multi_fault",
+   "title": "CPU-heavy job and a saturated disk together",
+   "injected_condition": "A compute job and a slow storage device both degrade the host.",
+   "evidence": {
+    "cpu_percent": 85.0,
+    "loadavg": [
+     5.5,
+     5.0,
+     4.0
+    ],
+    "pressure": {
+     "cpu": [
+      20.0,
+      null
+     ],
+     "io": [
+      30.0,
+      15.0
+     ]
+    },
+    "diskio": [
+     {
+      "device": "nvme0n1",
+      "util_percent": 92.0,
+      "await_ms": 40.0
+     }
+    ]
+   },
+   "uncertainty": "The jobs causing each load are not identified.",
+   "expected": {
+    "status": "multiple_issues",
+    "acceptable_primary": [
+     "cpu_saturation",
+     "disk_io_saturation"
+    ],
+    "valid_causes": [
+     "cpu_saturation",
+     "disk_io_saturation"
+    ],
+    "required_in_top3": [
+     "cpu_saturation",
+     "disk_io_saturation"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "h-partial-mem-missing",
+   "split": "heldout",
+   "category": "unavailable",
+   "title": "CPU saturation while memory figures are unreadable",
+   "injected_condition": "CPU is saturated; /proc/meminfo could not be read this cycle.",
+   "evidence": {
+    "memory": null,
+    "cpu_percent": 97.0,
+    "loadavg": [
+     6.0,
+     5.0,
+     4.0
+    ],
+    "pressure": {
+     "cpu": [
+      40.0,
+      null
+     ]
+    },
+    "top_cpu": [
+     {
+      "pid": 2101,
+      "name": "strategy_engine",
+      "cpu_percent": 360.0,
+      "mem_percent": 2.0
+     }
+    ]
+   },
+   "uncertainty": "Memory was not assessed, so a memory contribution cannot be ruled out.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "cpu_saturation"
+    ],
+    "valid_causes": [
+     "cpu_saturation"
+    ],
+    "required_in_top3": [
+     "cpu_saturation"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "memory"
+    ]
+   }
+  },
+  {
+   "id": "h-services-unchecked",
+   "split": "heldout",
+   "category": "unavailable",
+   "title": "Memory pressure with the service check disabled",
+   "injected_condition": "Memory exhausted and the OOM killer ran; systemd was deliberately not queried.",
+   "evidence": {
+    "memory": {
+     "used_percent": 95.0,
+     "swap_used_percent": 80.0
+    },
+    "pressure": {
+     "memory": [
+      30.0,
+      12.0
+     ]
+    },
+    "oom_kills": 2,
+    "commands_run": false,
+    "failed_units": null,
+    "top_mem": [
+     {
+      "pid": 2210,
+      "name": "java_pricing",
+      "cpu_percent": 3.0,
+      "mem_percent": 50.0
+     }
+    ]
+   },
+   "uncertainty": "Whether services were killed was not checked.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "memory_pressure"
+    ],
+    "valid_causes": [
+     "memory_pressure"
+    ],
+    "required_in_top3": [
+     "memory_pressure"
+    ],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "service"
+    ]
+   }
+  },
+  {
+   "id": "h-net-drops-only",
+   "split": "heldout",
+   "category": "network",
+   "title": "Drops without errors",
+   "injected_condition": "Receive-queue overflow drops packets; no errors.",
+   "evidence": {
+    "net": [
+     {
+      "name": "eth0",
+      "errors_total": 0,
+      "drops_total": 3000
+     }
+    ],
+    "net_deltas": {
+     "eth0": {
+      "errors": 0,
+      "drops": 50
+     }
+    }
+   },
+   "uncertainty": "Buffer sizing, IRQ affinity or traffic bursts could each explain the drops.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "network_interface_errors"
+    ],
+    "valid_causes": [
+     "network_interface_errors"
+    ],
+    "required_in_top3": [
+     "network_interface_errors"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "h-oom-past",
+   "split": "heldout",
+   "category": "process_crash",
+   "title": "Service died after an earlier OOM; memory has recovered",
+   "injected_condition": "A batch job was OOM-killed earlier; current memory is normal.",
+   "evidence": {
+    "oom_kills": 5,
+    "failed_units": [
+     "batch-etl.service"
+    ]
+   },
+   "uncertainty": "The OOM counter has no timestamp, so linking it to this failure is unproven.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "service_failure"
+    ],
+    "valid_causes": [
+     "service_failure"
+    ],
+    "required_in_top3": [
+     "service_failure"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": [
+     "oom"
+    ]
+   }
+  },
+  {
+   "id": "h-disk-warning",
+   "split": "heldout",
+   "category": "disk_space",
+   "title": "Filesystem at warning level only",
+   "injected_condition": "/data slowly grows to 83%.",
+   "evidence": {
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 41.0
+     },
+     {
+      "mount": "/data",
+      "fstype": "xfs",
+      "percent": 83.0
+     }
+    ]
+   },
+   "uncertainty": "Growth rate is unknown, so time-to-full cannot be estimated.",
+   "expected": {
+    "status": "diagnosed",
+    "acceptable_primary": [
+     "disk_space_exhaustion"
+    ],
+    "valid_causes": [
+     "disk_space_exhaustion"
+    ],
+    "required_in_top3": [
+     "disk_space_exhaustion"
+    ],
+    "max_confidence": "moderate",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "h-near-threshold-healthy",
+   "split": "heldout",
+   "category": "healthy",
+   "title": "Everything just below thresholds",
+   "injected_condition": "None: values sit close to, but under, every warning threshold.",
+   "evidence": {
+    "cpu_percent": 78.0,
+    "loadavg": [
+     3.8,
+     3.5,
+     3.0
+    ],
+    "memory": {
+     "used_percent": 83.0,
+     "swap_used_percent": 10.0
+    },
+    "disks": [
+     {
+      "mount": "/",
+      "fstype": "ext4",
+      "percent": 79.0
+     }
+    ],
+    "process_count": 1900
+   },
+   "uncertainty": "Close to thresholds: little headroom.",
+   "expected": {
+    "status": "healthy",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": []
+   }
+  },
+  {
+   "id": "h-timewait-only",
+   "split": "heldout",
+   "category": "sockets",
+   "title": "Many TIME_WAIT sockets, nothing else",
+   "injected_condition": "A client opens many short-lived outbound connections; this is normal TCP behaviour, not an incident.",
+   "evidence": {
+    "sockets": {
+     "listeners": [
+      [
+       "0.0.0.0",
+       22
+      ]
+     ],
+     "states": {
+      "LISTEN": 2,
+      "ESTABLISHED": 50,
+      "TIME_WAIT": 7000
+     }
+    }
+   },
+   "uncertainty": "TIME_WAIT alone is common and usually harmless.",
+   "expected": {
+    "status": "inconclusive",
+    "acceptable_primary": [],
+    "valid_causes": [
+     "connection_state_buildup"
+    ],
+    "required_in_top3": [],
+    "max_confidence": "weak",
+    "uncertainty_keywords": [
+     "time_wait"
+    ]
+   }
+  },
+  {
+   "id": "h-key-metrics-missing",
+   "split": "heldout",
+   "category": "unavailable",
+   "title": "CPU, load and memory unreadable; the rest normal",
+   "injected_condition": "The collector lost access to /proc/stat, /proc/loadavg and /proc/meminfo.",
+   "evidence": {
+    "cpu_percent": null,
+    "loadavg": null,
+    "memory": null
+   },
+   "uncertainty": "Core host metrics were not assessed.",
+   "expected": {
+    "status": "insufficient_data",
+    "acceptable_primary": [],
+    "valid_causes": [],
+    "required_in_top3": [],
+    "max_confidence": "strong",
+    "uncertainty_keywords": [
+     "assess"
+    ]
+   }
+  }
+ ]
+}

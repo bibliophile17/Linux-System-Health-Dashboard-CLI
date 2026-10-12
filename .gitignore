@@ -8,6 +8,12 @@ build/
 dist/
 *.egg-info/
 # local runtime artefacts
+# local runtime artefacts (project root only)
 *.jsonl
-state.json
-incident*.json
+/state.json
+/incident*.json
+# the evaluation dataset and results ARE tracked
+!eval/incidents.json
+!eval/incidents.sha256
+!eval/results.json
+
