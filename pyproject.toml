@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syshealth"
+version = "0.3.0"
+description = "Read-only Linux health monitoring, alerting and diagnostics built on /proc (standard library only)."
+readme = "README.md"
+requires-python = ">=3.11"           # tomllib (config files) is in the standard library from 3.11
+dependencies = []                    # no runtime dependencies
+classifiers = [
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Environment :: Console",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "pyyaml>=6"]   # pyyaml: tests that validate the monitoring YAML only
+
+[project.scripts]
+syshealth = "syshealth.cli:main"
+
+[tool.setuptools]
+packages = ["syshealth"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]   # pycodestyle, pyflakes, import order, bugbear
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]                 # dense, readable assertion lines

@@ -1,0 +1,75 @@
+# Alert rules for syshealth metrics. Thresholds are starting points: tune them for your hosts.
+groups:
+  - name: syshealth
+    rules:
+      - alert: SyshealthExporterDown
+        expr: up{job="syshealth"} == 0
+        for: 2m
+        labels: {severity: critical}
+        annotations:
+          summary: "syshealth exporter is not being scraped"
+          description: "Prometheus could not scrape {{ $labels.instance }} for 2 minutes."
+
+      - alert: SyshealthCollectionStale
+        expr: time() - syshealth_last_collection_timestamp_seconds > 120
+        for: 1m
+        labels: {severity: warning}
+        annotations:
+          summary: "syshealth has not collected fresh data for over 2 minutes"
+          description: "The exporter is up but its background collection is failing or stuck."
+
+      - alert: SyshealthCollectionErrors
+        expr: increase(syshealth_collection_errors_total[10m]) > 0
+        for: 0m
+        labels: {severity: warning}
+        annotations:
+          summary: "syshealth collection cycles are failing"
+          description: "{{ $value }} failed collection cycle(s) in the last 10 minutes."
+
+      - alert: HostCpuHigh
+        expr: avg_over_time(syshealth_cpu_utilization_ratio[10m]) > 0.9
+        for: 5m
+        labels: {severity: warning}
+        annotations:
+          summary: "CPU busy above 90% (10m average)"
+          description: "Average CPU utilisation is {{ $value | humanizePercentage }}."
+
+      - alert: HostMemoryHigh
+        expr: syshealth_memory_utilization_ratio > 0.9
+        for: 10m
+        labels: {severity: warning}
+        annotations:
+          summary: "Memory utilisation above 90%"
+          description: "Used memory is {{ $value | humanizePercentage }} of total."
+
+      - alert: FilesystemNearlyFull
+        expr: syshealth_filesystem_utilization_ratio > 0.9
+        for: 5m
+        labels: {severity: critical}
+        annotations:
+          summary: "Filesystem {{ $labels.mountpoint }} is over 90% full"
+          description: "{{ $labels.mountpoint }} is {{ $value | humanizePercentage }} used."
+
+      - alert: FilesystemFillingFast
+        expr: predict_linear(syshealth_filesystem_utilization_ratio[1h], 4 * 3600) > 1
+        for: 15m
+        labels: {severity: warning}
+        annotations:
+          summary: "Filesystem {{ $labels.mountpoint }} is projected to fill within 4 hours"
+          description: "Linear extrapolation of the last hour reaches 100% in under 4 hours."
+
+      - alert: NetworkInterfaceErrors
+        expr: rate(syshealth_network_receive_errors_total[5m]) + rate(syshealth_network_transmit_errors_total[5m]) > 0
+        for: 10m
+        labels: {severity: warning}
+        annotations:
+          summary: "Interface {{ $labels.device }} is reporting errors"
+          description: "Errors have been increasing for 10 minutes; see the syshealth 'diagnose' output."
+
+      - alert: SyshealthCriticalAlertActive
+        expr: syshealth_alerts_active{severity="critical"} > 0
+        for: 5m
+        labels: {severity: warning}
+        annotations:
+          summary: "syshealth reports an active critical alert"
+          description: "See syshealth_alert_active for which metric and target."
