@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read            # no secrets and no write access are needed
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install ruff
+      - run: ruff check .
+
+  test:
+    needs: lint
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install (editable, with dev tools)
+        run: python -m pip install -e ".[dev]"
+      - name: Unit tests
+        run: python -m pytest -q
+      - name: Smoke test on the real runner /proc
+        shell: bash
+        run: |
+          set -u
+          python -m syshealth --version
+          python -m syshealth show --sample 0.5 --no-color || [ $? -le 2 ]     # 1/2 = alerts, a valid result
+          python -m syshealth diagnose --sample 0.5 --no-color --no-commands || [ $? -le 2 ]
+          # check exits 0/1/2 for ok/warning/critical (runner disks may legitimately alert); 3 = monitoring broke
+          rc=0; python -m syshealth check --sample 0.5 --json > check.json || rc=$?
+          [ "$rc" -le 2 ]
+          python -m json.tool check.json > /dev/null
+          rc=0; python -m syshealth incident --sample 0.5 --no-commands > incident.json || rc=$?
+          [ "$rc" -le 2 ]
+          python -m json.tool incident.json > /dev/null
+          # exporter: serve on loopback, scrape once, stop with SIGTERM (must exit cleanly)
+          python -m syshealth exporter --port 19877 --refresh 2 --sample 0.3 &
+          EXP=$!
+          for _ in $(seq 1 20); do curl -fsS http://127.0.0.1:19877/healthz > /dev/null 2>&1 && break; sleep 0.5; done
+          curl -fsS http://127.0.0.1:19877/metrics | grep -q '^syshealth_cpu_utilization_ratio'
+          kill -TERM "$EXP"
+          wait "$EXP"

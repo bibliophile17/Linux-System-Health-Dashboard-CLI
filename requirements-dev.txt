@@ -1,0 +1,4 @@
+# Development / CI only. The application itself has no third-party dependencies.
+pytest
+ruff
+pyyaml   # tests only: validates the shipped monitoring YAML

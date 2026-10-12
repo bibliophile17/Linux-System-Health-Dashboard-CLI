@@ -1,3 +1,2 @@
-psutil>=5.9.0
-rich>=13.0.0
-click>=8.0.0
+# Core monitoring uses only the Python standard library (Linux /proc).
+# Development: pytest

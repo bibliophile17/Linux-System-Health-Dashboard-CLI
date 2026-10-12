@@ -1,0 +1,30 @@
+# syshealth example configuration. Everything here is optional; omitted values use built-in defaults.
+# Percent metrics are 0-100. An alert opens at `warn`, escalates at `crit`.
+
+# An alert steps down only after the value falls this fraction below its threshold
+# (0.03 = 3%), which stops flapping around the boundary.
+hysteresis = 0.03
+
+[thresholds.cpu_percent]       # whole-host CPU busy %, measured over the --sample window
+warn = 80
+crit = 95
+
+[thresholds.memory_percent]    # (MemTotal - MemAvailable) / MemTotal
+warn = 85
+crit = 95
+
+[thresholds.swap_percent]      # not evaluated when no swap is configured
+warn = 50
+crit = 80
+
+[thresholds.disk_percent]      # evaluated per mounted real filesystem
+warn = 80
+crit = 90
+
+[thresholds.load_per_core]     # 1-minute load average divided by CPU count
+warn = 1.0
+crit = 2.0
+
+[thresholds.process_count]
+warn = 2000
+crit = 8000

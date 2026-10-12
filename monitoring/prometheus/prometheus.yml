@@ -1,0 +1,22 @@
+# Minimal Prometheus config for the syshealth exporter (Prometheus OSS, free).
+# Local only: both the exporter and Prometheus bind to 127.0.0.1 in this setup.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - alerts.yml            # resolved relative to this file
+
+scrape_configs:
+  - job_name: syshealth
+    static_configs:
+      - targets: ["127.0.0.1:9877"]
+    # If you started the exporter with --token-file (required for non-loopback binds), also add:
+    # authorization:
+    #   type: Bearer
+    #   credentials_file: /etc/prometheus/syshealth.token
+
+  # Optional: the official Node Exporter for deeper host metrics (https://github.com/prometheus/node_exporter).
+  # - job_name: node
+  #   static_configs:
+  #     - targets: ["127.0.0.1:9100"]

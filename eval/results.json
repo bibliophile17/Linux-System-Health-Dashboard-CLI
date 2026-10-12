@@ -1,0 +1,856 @@
+{
+ "by_split": {
+  "dev": {
+   "abstain_cases": 1,
+   "assertive_claims": 12,
+   "cases": 16,
+   "cases_with_unsupported_claim": 0,
+   "correct_abstention_pct": 100.0,
+   "correct_abstentions": 1,
+   "definite_cases": 11,
+   "false_abstention_pct": 0.0,
+   "false_abstentions": 0,
+   "false_alarm_pct": 0.0,
+   "false_alarms": 0,
+   "healthy_cases": 4,
+   "nonhealthy_cases": 12,
+   "overclaim_cases": 0,
+   "status_exact": 16,
+   "status_exact_pct": 100.0,
+   "top1_correct": 11,
+   "top1_pct": 100.0,
+   "top3_correct": 11,
+   "top3_pct": 100.0,
+   "uncertainty_keyword_cases": 4,
+   "uncertainty_keywords_ok": 4,
+   "uncertainty_present_nonhealthy": 12,
+   "unsupported_assertive_claims": 0,
+   "unsupported_claim_pct": 0.0,
+   "untraceable_support_cases": 0
+  },
+  "heldout": {
+   "abstain_cases": 5,
+   "assertive_claims": 9,
+   "cases": 13,
+   "cases_with_unsupported_claim": 0,
+   "correct_abstention_pct": 100.0,
+   "correct_abstentions": 5,
+   "definite_cases": 7,
+   "false_abstention_pct": 0.0,
+   "false_abstentions": 0,
+   "false_alarm_pct": 0.0,
+   "false_alarms": 0,
+   "healthy_cases": 1,
+   "nonhealthy_cases": 12,
+   "overclaim_cases": 0,
+   "status_exact": 13,
+   "status_exact_pct": 100.0,
+   "top1_correct": 7,
+   "top1_pct": 100.0,
+   "top3_correct": 7,
+   "top3_pct": 100.0,
+   "uncertainty_keyword_cases": 8,
+   "uncertainty_keywords_ok": 8,
+   "uncertainty_present_nonhealthy": 12,
+   "unsupported_assertive_claims": 0,
+   "unsupported_claim_pct": 0.0,
+   "untraceable_support_cases": 0
+  }
+ },
+ "cases": [
+  {
+   "category": "healthy",
+   "expected_status": "healthy",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": false,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "healthy",
+   "id": "healthy-01",
+   "ranked": [],
+   "split": "dev"
+  },
+  {
+   "category": "healthy",
+   "expected_status": "healthy",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": false,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "healthy",
+   "id": "healthy-02",
+   "ranked": [],
+   "split": "dev"
+  },
+  {
+   "category": "cpu",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "cpu-01",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "cpu",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "cpu-02",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "memory",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "mem-01",
+   "ranked": [
+    [
+     "memory_pressure",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "memory",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "mem-02",
+   "ranked": [
+    [
+     "memory_pressure",
+     "strong"
+    ],
+    [
+     "service_failure",
+     "moderate"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "disk_space",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "disk-01",
+   "ranked": [
+    [
+     "disk_space_exhaustion",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "disk_space",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "disk-02",
+   "ranked": [
+    [
+     "disk_space_exhaustion",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "disk_io",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "io-01",
+   "ranked": [
+    [
+     "disk_io_saturation",
+     "strong"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "network",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "net-01",
+   "ranked": [
+    [
+     "network_interface_errors",
+     "moderate"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "network",
+   "expected_status": "healthy",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": false,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "healthy",
+   "id": "net-02",
+   "ranked": [],
+   "split": "dev"
+  },
+  {
+   "category": "process_crash",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "svc-01",
+   "ranked": [
+    [
+     "service_failure",
+     "moderate"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "process_crash",
+   "expected_status": "healthy",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": false,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "healthy",
+   "id": "svc-02",
+   "ranked": [],
+   "split": "dev"
+  },
+  {
+   "category": "sockets",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "sock-01",
+   "ranked": [
+    [
+     "connection_state_buildup",
+     "moderate"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "process_count",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "proc-01",
+   "ranked": [
+    [
+     "process_proliferation",
+     "moderate"
+    ]
+   ],
+   "split": "dev"
+  },
+  {
+   "category": "unavailable",
+   "expected_status": "insufficient_data",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "insufficient_data",
+   "id": "unav-01",
+   "ranked": [],
+   "split": "dev"
+  },
+  {
+   "category": "conflicting",
+   "expected_status": "inconclusive",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "inconclusive",
+   "id": "h-cpu-burst",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "weak"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "insufficient",
+   "expected_status": "inconclusive",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "inconclusive",
+   "id": "h-mem-highuse",
+   "ranked": [
+    [
+     "memory_pressure",
+     "weak"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "conflicting",
+   "expected_status": "inconclusive",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "inconclusive",
+   "id": "h-load-unexplained",
+   "ranked": [
+    [
+     "unexplained_load",
+     "weak"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "multi_fault",
+   "expected_status": "multiple_issues",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "multiple_issues",
+   "id": "h-multi-cpu-disk",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "strong"
+    ],
+    [
+     "disk_space_exhaustion",
+     "strong"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "multi_fault",
+   "expected_status": "multiple_issues",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "multiple_issues",
+   "id": "h-cpu-io-both",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "strong"
+    ],
+    [
+     "disk_io_saturation",
+     "strong"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "unavailable",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "h-partial-mem-missing",
+   "ranked": [
+    [
+     "cpu_saturation",
+     "strong"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "unavailable",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "h-services-unchecked",
+   "ranked": [
+    [
+     "memory_pressure",
+     "strong"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "network",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "h-net-drops-only",
+   "ranked": [
+    [
+     "network_interface_errors",
+     "moderate"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "process_crash",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "h-oom-past",
+   "ranked": [
+    [
+     "service_failure",
+     "moderate"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "disk_space",
+   "expected_status": "diagnosed",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": true,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "diagnosed",
+   "id": "h-disk-warning",
+   "ranked": [
+    [
+     "disk_space_exhaustion",
+     "moderate"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "healthy",
+   "expected_status": "healthy",
+   "flags": {
+    "abstained": false,
+    "false_abstention": false,
+    "false_alarm": false,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "healthy",
+   "id": "h-near-threshold-healthy",
+   "ranked": [],
+   "split": "heldout"
+  },
+  {
+   "category": "sockets",
+   "expected_status": "inconclusive",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "inconclusive",
+   "id": "h-timewait-only",
+   "ranked": [
+    [
+     "connection_state_buildup",
+     "weak"
+    ]
+   ],
+   "split": "heldout"
+  },
+  {
+   "category": "unavailable",
+   "expected_status": "insufficient_data",
+   "flags": {
+    "abstained": true,
+    "false_abstention": true,
+    "false_alarm": true,
+    "has_uncertainty": true,
+    "keywords_ok": true,
+    "overclaim": false,
+    "status_match": true,
+    "top1": false,
+    "top3": true,
+    "unsupported_claims": [],
+    "untraceable_support": false
+   },
+   "got_status": "insufficient_data",
+   "id": "h-key-metrics-missing",
+   "ranked": [],
+   "split": "heldout"
+  }
+ ],
+ "dataset_matches_freeze": true,
+ "dataset_sha256": "37d1972f14331e6adc7218e80c9ccd4bb6ac49be21e305cb364e27f729155824",
+ "naive_severity_only": {
+  "abstain_cases": 6,
+  "assertive_claims": 26,
+  "cases": 29,
+  "cases_with_unsupported_claim": 2,
+  "correct_abstention_pct": 0.0,
+  "correct_abstentions": 0,
+  "definite_cases": 18,
+  "false_abstention_pct": 0.0,
+  "false_abstentions": 0,
+  "false_alarm_pct": 0.0,
+  "false_alarms": 0,
+  "healthy_cases": 5,
+  "nonhealthy_cases": 24,
+  "overclaim_cases": 5,
+  "status_exact": 21,
+  "status_exact_pct": 72.4,
+  "top1_correct": 18,
+  "top1_pct": 100.0,
+  "top3_correct": 18,
+  "top3_pct": 100.0,
+  "uncertainty_keyword_cases": 12,
+  "uncertainty_keywords_ok": 0,
+  "uncertainty_present_nonhealthy": 24,
+  "unsupported_assertive_claims": 2,
+  "unsupported_claim_pct": 7.7,
+  "untraceable_support_cases": 0
+ },
+ "rule_based": {
+  "abstain_cases": 6,
+  "assertive_claims": 21,
+  "cases": 29,
+  "cases_with_unsupported_claim": 0,
+  "correct_abstention_pct": 100.0,
+  "correct_abstentions": 6,
+  "definite_cases": 18,
+  "false_abstention_pct": 0.0,
+  "false_abstentions": 0,
+  "false_alarm_pct": 0.0,
+  "false_alarms": 0,
+  "healthy_cases": 5,
+  "nonhealthy_cases": 24,
+  "overclaim_cases": 0,
+  "status_exact": 29,
+  "status_exact_pct": 100.0,
+  "top1_correct": 18,
+  "top1_pct": 100.0,
+  "top3_correct": 18,
+  "top3_pct": 100.0,
+  "uncertainty_keyword_cases": 12,
+  "uncertainty_keywords_ok": 12,
+  "uncertainty_present_nonhealthy": 24,
+  "unsupported_assertive_claims": 0,
+  "unsupported_claim_pct": 0.0,
+  "untraceable_support_cases": 0
+ },
+ "schema_version": 1,
+ "splits_evaluated": [
+  "dev",
+  "heldout"
+ ]
+}
